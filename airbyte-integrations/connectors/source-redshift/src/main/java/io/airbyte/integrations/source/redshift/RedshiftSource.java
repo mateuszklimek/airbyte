@@ -30,6 +30,7 @@ import io.airbyte.commons.json.Jsons;
 import io.airbyte.integrations.base.IntegrationRunner;
 import io.airbyte.integrations.base.Source;
 import io.airbyte.integrations.source.jdbc.AbstractJdbcSource;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,11 @@ public class RedshiftSource extends AbstractJdbcSource implements Source {
             redshiftConfig.get("port").asText(),
             redshiftConfig.get("database").asText()))
         .build());
+  }
+
+  @Override
+  protected List<String> getExcludedInternalSchemas() {
+    return List.of("information_schema", "pg_catalog", "pg_internal", "catalog_history");
   }
 
   public static void main(String[] args) throws Exception {

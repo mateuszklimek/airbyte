@@ -39,10 +39,12 @@ import java.util.List;
 
 public class RedshiftIntegrationTests extends TestSource {
 
+  // From the AWS tutorial, data was pre-loaded in redshift:
   // https://docs.aws.amazon.com/redshift/latest/dg/tutorial-loading-data.html
-  // This test case expects a tables users(userid, username) to be loaded on a active redshift cluster
+  // This test case expects a tables public.customer(c_custkey, c_name, c_nation) to be loaded on a
+  // active redshift cluster
   // that is useable from outside of vpc
-  private static final String STREAM_NAME = "users";
+  private static final String STREAM_NAME = "public.customer";
   private JsonNode config;
 
   private static JsonNode getStaticConfig() {
@@ -78,8 +80,9 @@ public class RedshiftIntegrationTests extends TestSource {
   protected AirbyteCatalog getCatalog() {
     return CatalogHelpers.createAirbyteCatalog(
         STREAM_NAME,
-        Field.of("userid", Field.JsonSchemaPrimitive.NUMBER),
-        Field.of("username", Field.JsonSchemaPrimitive.STRING));
+        Field.of("c_custkey", Field.JsonSchemaPrimitive.NUMBER),
+        Field.of("c_name", Field.JsonSchemaPrimitive.STRING),
+        Field.of("c_nation", Field.JsonSchemaPrimitive.STRING));
   }
 
   @Override
